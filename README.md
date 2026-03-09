@@ -1,16 +1,69 @@
-# React + Vite
+# GSLC SNA Group 7 -- Docker React Boilerplate
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Menjalankan Project dengan Docker
 
-## React Compiler
+Untuk menjalankan aplikasi menggunakan Docker jalankan perintah berikut:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+``` bash
+docker compose up --build
+```
 
-## Expanding the ESLint configuration
+Penjelasan:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-   `docker compose up` digunakan untuk menjalankan container
+-   `--build` digunakan untuk membangun ulang Docker image jika ada
+    perubahan pada konfigurasi
+
+
+
+## Menjalankan Container di Background
+
+Jika ingin menjalankan container tanpa membuka terminal terus menerus,
+gunakan:
+
+``` bash
+docker compose up -d
+```
+
+
+
+## Mengakses Aplikasi
+
+Setelah container berhasil dijalankan, buka browser dan akses:
+
+http://localhost:3000
+
+Aplikasi React akan berjalan dan dapat diakses melalui alamat tersebut.
+
+
+
+## Menghentikan Container
+
+Untuk menghentikan container yang sedang berjalan gunakan perintah:
+
+``` bash
+docker compose down
+```
+
+
+
+## Melihat Container yang Sedang Berjalan
+
+Gunakan perintah berikut untuk melihat container Docker yang aktif:
+
+``` bash
+docker ps
+```
+
+
+
+
+## Author
+Alexander Bagus Wijanarko - 2802407824
+
+Kyoshiro Kaynelie - 2802407553
+
+Mikhael Filemon - 2802471221
+
