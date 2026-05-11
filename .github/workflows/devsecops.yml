@@ -23,6 +23,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Security 2: Semgrep (SAST - Static Application Security Testing)
+      - name: Run Semgrep SAST
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/javascript p/react p/security-audit"
+
       # Setup Node.js
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
@@ -33,17 +39,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Security 2: Dependency Scanning (SCA)
-      # We use || true so the pipeline won't be red if Vite has a little warning
+      # Security 3: Dependency Scanning (SCA)
       - name: Run npm audit (Dependency Security)
         run: npm audit --audit-level=high || true
 
-      # Build Docker Image for testing
+      # Build Docker Image for Container Scanning
       - name: Build Docker Image
         run: docker build -t gslc-frontend:latest .
 
-      # Security 3: Container Scanning using Trivy
-      # This will print out the vulnerability table in the GitHub Actions log
+      # Security 4: Container Scanning using Trivy
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
