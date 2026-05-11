@@ -56,4 +56,10 @@ jobs:
           exit-code: '0' 
           ignore-unfixed: true
           vuln-type: 'os,library'
+
+      # Security 5: ESLint Security Plugin (Code Quality & Security)
+      - name: Run ESLint Security Scan
+        run: |
+          npm install eslint-plugin-security --save-dev
+          npx eslint . --plugin security --rule 'security/detect-object-injection: warn'
           severity: 'CRITICAL,HIGH'
