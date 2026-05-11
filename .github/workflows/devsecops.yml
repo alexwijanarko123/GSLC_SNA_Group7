@@ -57,3 +57,10 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+      # Security 5: ESLint (Code Quality & Security)
+      - name: Install ESLint + Security Plugin
+        run: npm install --save-dev eslint eslint-plugin-security --no-audit
+      
+      - name: Run ESLint Security Scan
+        run: npx eslint . --max-warnings=0
