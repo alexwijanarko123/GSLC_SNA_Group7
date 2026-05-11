@@ -1,4 +1,4 @@
-# GSLC SNA Group 7 -- Docker React Boilerplate
+# GSLC SNA Group 7 -- FinTech Startup Static Dashboard
 
 
 
