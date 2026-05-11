@@ -71,4 +71,4 @@ jobs:
         run: |
           # Capturing the local image ID to sign the specific build
           IMAGE_ID=$(docker images -q gslc-frontend:latest)
-          cosign sign --yes --allow-import-unsafe-local-graph gslc-frontend@${IMAGE_ID}
+          cosign sign --yes --local-keyless gslc-frontend@${IMAGE_ID} || cosign sign --yes gslc-frontend@${IMAGE_ID}
