@@ -9,6 +9,10 @@ on:
 jobs:
   build-and-secure:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
 
     steps:
       # 1. Pull code from repo
@@ -41,7 +45,7 @@ jobs:
 
       # Security 3: Dependency Scanning (SCA)
       - name: Run npm audit (Dependency Security)
-        run: npm audit --audit-level=high || true
+        run: npm audit --audit-level=high
 
       # Build Docker Image for Container Scanning
       - name: Build Docker Image
@@ -53,7 +57,18 @@ jobs:
         with:
           image-ref: 'gslc-frontend:latest'
           format: 'table'
-          exit-code: '0' 
+          exit-code: '1' 
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+      
+      # Install Cosign tool
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.5.0
+
+      # Security 5: Sign the Docker Image
+      - name: Sign the published Docker image
+        run: |
+          # Capturing the local image ID to sign the specific build
+          IMAGE_ID=$(docker images -q gslc-frontend:latest)
+          cosign sign --yes --allow-import-unsafe-local-graph gslc-frontend@${IMAGE_ID}
