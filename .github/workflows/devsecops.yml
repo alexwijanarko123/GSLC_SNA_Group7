@@ -70,5 +70,5 @@ jobs:
       - name: Sign the published Docker image
         run: |
           # Capturing the local image ID to sign the specific build
-          IMAGE_ID=$(docker images -q gslc-frontend:latest)
-          cosign sign --yes --local-keyless gslc-frontend@${IMAGE_ID} || cosign sign --yes gslc-frontend@${IMAGE_ID}
+          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' gslc-frontend:latest || docker inspect --format='sha256:{{.Id}}' gslc-frontend:latest)
+          cosign sign --yes --keyless ${IMAGE_DIGEST} || cosign sign --yes ${IMAGE_DIGEST}
