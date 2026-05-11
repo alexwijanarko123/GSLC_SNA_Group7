@@ -57,8 +57,17 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
 
-      # Security 5: ESLint Security Plugin (Code Quality & Security)
+      # Security 5: ESLint (Code Quality & Security)
+      - name: Install ESLint + Security Plugin
+        run: npm install --save-dev eslint eslint-plugin-security
+      
       - name: Run ESLint Security Scan
         run: |
-          npm install eslint-plugin-security --save-dev
-          npx eslint . --plugin security --rule 'security/detect-object-injection: warn'
+          npx eslint . \
+            --plugin security \
+            --rule "security/detect-object-injection:error" \
+            --rule "security/detect-non-literal-fs-filename:error" \
+            --rule "security/detect-non-literal-require:error" \
+            --rule "security/detect-eval-with-expression:error" \
+            --rule "security/detect-possible-timing-attacks:error" \
+            --max-warnings=0
