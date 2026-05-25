@@ -11,5 +11,9 @@ FROM nginx:alpine
 
 # Copy Vite build result from destination folder to Nginx directory
 COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+RUN mkdir -p /var/log/nginx \
+	&& rm -f /var/log/nginx/access.log /var/log/nginx/error.log \
+	&& touch /var/log/nginx/access.log /var/log/nginx/error.log
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
