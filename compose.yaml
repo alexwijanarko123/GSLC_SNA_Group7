@@ -1,7 +1,40 @@
 services:
   app:
+    container_name: sna7
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3000:80"
+    volumes:
+      - ./nginx_logs:/var/log/nginx
+
+  goaccess:
+    image: allinurl/goaccess
+    entrypoint:
+      - /bin/sh
+      - -c
+    volumes:
+      - ./nginx_logs:/var/log/nginx
+      - ./goaccess.conf:/etc/goaccess.conf:ro
+    command:
+      - |
+        mkdir -p /var/log/nginx/goaccess-db
+        while true; do
+          if [ -f /var/log/nginx/goaccess-db/.initialized ]; then
+            goaccess -p /etc/goaccess.conf /var/log/nginx/access.log --output=/var/log/nginx/report.json --json-pretty-print --restore --persist --db-path=/var/log/nginx/goaccess-db
+          else
+            goaccess -p /etc/goaccess.conf /var/log/nginx/access.log --output=/var/log/nginx/report.json --json-pretty-print --persist --db-path=/var/log/nginx/goaccess-db
+            touch /var/log/nginx/goaccess-db/.initialized
+          fi
+          sleep 2
+        done
+
+  middleware:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - goaccess
+    command: ["python", "-u", "src/scenario_filter.py"]

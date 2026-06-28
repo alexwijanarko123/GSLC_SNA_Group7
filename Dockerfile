@@ -8,12 +8,14 @@ RUN npm run build
 
 # Stage 2: Serving with Nginx
 FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Copy Vite build result from destination folder to Nginx directory
 COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-RUN mkdir -p /var/log/nginx \
-	&& rm -f /var/log/nginx/access.log /var/log/nginx/error.log \
-	&& touch /var/log/nginx/access.log /var/log/nginx/error.log
+RUN mkdir -p /var/log/nginx && chmod 777 /var/log/nginx
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

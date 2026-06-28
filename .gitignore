@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 anomaly_report.html
+ai_catch.json
+.vite/
+nginx_logs/
 *.local
 
 # Editor directories and files
