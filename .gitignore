@@ -13,7 +13,9 @@ dist-ssr
 anomaly_report.html
 ai_catch.json
 .vite/
+.venv/
 nginx_logs/
+__pycache__/
 *.local
 
 # Editor directories and files
